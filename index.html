@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Employee Salary Predictor 💼</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+  <style>
+    body {
+      background: linear-gradient(-45deg, #ff9a9e, #fad0c4, #fad0c4, #ff9a9e);
+      background-size: 400% 400%;
+      animation: gradientBG 10s ease infinite;
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    @keyframes gradientBG {
+      0% {background-position: 0% 50%;}
+      50% {background-position: 100% 50%;}
+      100% {background-position: 0% 50%;}
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 20px;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+      padding: 30px;
+      max-width: 850px;
+      width: 100%;
+    }
+
+    .input-container {
+      background: rgba(255, 255, 255, 0.2);
+      padding: 20px;
+      border-radius: 15px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+
+    input, select {
+      border-radius: 10px !important;
+      border: 1px solid #ddd !important;
+      margin: 5px;
+      padding: 5px 10px;
+    }
+
+    input:focus, select:focus {
+      transform: scale(1.02);
+      box-shadow: 0 0 10px #fff;
+      outline: none;
+    }
+
+    .btn-primary {
+      background: linear-gradient(45deg, #00c6ff, #0072ff);
+      border-radius: 10px;
+      border: none;
+      padding: 8px 20px;
+      margin-top: 10px;
+    }
+
+    .result-box {
+      background: linear-gradient(45deg, #00c6ff, #0072ff);
+      padding: 20px;
+      border-radius: 10px;
+      margin-top: 20px;
+      color: #fff;
+    }
+
+    .form-inline {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 15px;
+      justify-content: center;
+    }
+
+    .form-inline label {
+      margin-right: 5px;
+    }
+
+    table {
+      width: 100%;
+      text-align: center;
+    }
+
+    th, td {
+      white-space: nowrap;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <h3 class="text-center mb-4">💼 Employee Salary Prediction</h3>
+
+    <div class="input-container">
+      <form method="POST" class="form-inline">
+        <label>Age:</label>
+        <span id="ageVal">30</span>
+        <input type="range" class="form-range" name="age" min="18" max="65" value="30" oninput="ageVal.innerText=this.value">
+
+        <label>Education:</label>
+        <select name="education" required>
+          <option value="0">HS-grad</option>
+          <option value="1">Bachelors</option>
+          <option value="2">Masters</option>
+        </select>
+
+        <label>Job Role:</label>
+        <select name="occupation" required>
+          <option value="0">Tech-support</option>
+          <option value="1">Sales</option>
+          <option value="2">Exec-managerial</option>
+        </select>
+
+        <label>Hours/Week:</label>
+        <span id="hoursVal">40</span>
+        <input type="range" class="form-range" name="hours" min="1" max="80" value="40" oninput="hoursVal.innerText=this.value">
+
+        <label>Experience (Years):</label>
+        <span id="expVal">5</span>
+        <input type="range" class="form-range" name="experience" min="0" max="50" value="5" oninput="expVal.innerText=this.value">
+
+        <button type="submit" class="btn btn-primary">Predict 💰</button>
+      </form>
+    </div>
+
+    {% if user_data %}
+    <!-- Table Output First -->
+    <div class="result-box text-center animate__animated animate__fadeInUp">
+      <h5 class="mb-3">Prediction Details 📋</h5>
+      <div class="table-responsive">
+        <table class="table table-bordered table-striped table-hover text-white">
+          <thead class="table-light text-dark">
+            <tr>
+              <th>Age</th>
+              <th>Education</th>
+              <th>Occupation</th>
+              <th>Hours/Week</th>
+              <th>Experience</th>
+              <th>Prediction</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>{{ user_data.age }}</td>
+              <td>
+                {% if user_data.education == "0" %} HS-grad {% elif user_data.education == "1" %} Bachelors {% else %} Masters {% endif %}
+              </td>
+              <td>
+                {% if user_data.occupation == "0" %} Tech-support {% elif user_data.occupation == "1" %} Sales {% else %} Exec-managerial {% endif %}
+              </td>
+              <td>{{ user_data.hours }}</td>
+              <td>{{ user_data.experience }}</td>
+              <td><strong>{{ prediction }}</strong></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Short Sentence After Table -->
+    <div class="result-box text-center animate__animated animate__fadeInUp">
+      <p style="font-size: 1.2rem;">
+        Predicted salary: <strong>{{ prediction }}</strong>.
+      </p>
+    </div>
+    {% endif %}
+
+  </div>
+
+</body>
+</html>
